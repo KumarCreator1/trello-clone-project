@@ -1,0 +1,40 @@
+{
+  "name": "trello-clone-server",
+  "version": "1.0.0",
+  "description": "API for trello clone project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon --experimental-modules server.js",
+    "format": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KumarCreator1/trello-clone-project.git"
+  },
+  "keywords": [
+    "API",
+    "Backend",
+    "Learning",
+    "Project",
+    "Trello",
+    "Clone"
+  ],
+  "author": "Vicky Kumar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KumarCreator1/trello-clone-project/issues"
+  },
+  "homepage": "https://github.com/KumarCreator1/trello-clone-project#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11",
+    "prettier": "^3.8.1"
+  }
+}
