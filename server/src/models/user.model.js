@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
@@ -6,11 +6,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
     },
     username: {
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
     },
     password: {
       type: String,
@@ -19,10 +21,10 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
       default:
-        'https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png',
+        "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png",
     },
   },
   { timestamps: true },
 );
 
-export const User = mongoose.model('User', userSchema);
+export const User = mongoose.model("User", userSchema);
