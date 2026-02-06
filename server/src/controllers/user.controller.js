@@ -57,4 +57,69 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, createdUser, "User registered successfully.Go to login"));
 });
 
-export { registerUser, loginUser };
+const loginUser = asyncHandler(async (req, res) => {
+  const { email, username, password } = req.body || {};
+
+  if (!(username || email)) {
+    throw new ApiError(400, "username or email is required");
+  }
+
+  if (!password) {
+    throw new ApiError(400, "password is required");
+  }
+
+  const retrievedUser = await User.findOne({
+    $or: [{ username }, { email }],
+  });
+
+  if (!retrievedUser) {
+    throw new ApiError(
+      404,
+      "User not found with the provided credentials, please check and try again or register if you don't have an account",
+    );
+  }
+  const isPasswordCorrect = await retrievedUser.isPasswordCorrect(password);
+
+  if (!isPasswordCorrect) {
+    throw new ApiError(401, "wrong username or password");
+  }
+
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(retrievedUser._id);
+  const user = retrievedUser.toObject();
+  delete user.password;
+  delete user.refreshToken;
+
+  return res
+    .status(200)
+    .cookie("refreshToken", refreshToken, httpOptions)
+    .cookie("accessToken", accessToken, httpOptions)
+    .json(new ApiResponse(200, { user }, "User logged in successfully"));
+});
+
+const logOutUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        refreshToken: undefined,
+      },
+    },
+    {
+      new: true,
+    },
+  );
+
+  const option = {
+    httpOnly: true,
+    secure: true,
+    path: "/",
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", option)
+    .clearCookie("refreshToken", option)
+    .json(new ApiResponse(200, {}, "user logged out successfully"));
+});
+
+export { registerUser, loginUser, logOutUser };

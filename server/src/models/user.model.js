@@ -56,25 +56,25 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 userSchema.methods.generateAccessToken = function () {
   try {
     return jwt.sign(
-      { id: this._id, email: this.email, username: this.username },
-      process.env.JWT_SECRET,
+      { _id: this._id, email: this.email, username: this.username },
+      process.env.ACCESS_TOKEN_SECRET,
       {
         expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
       },
     );
   } catch (error) {
-    log("error while generating access token");
+    console.log("error while generating access token", error);
     throw error;
   }
 };
 
 userSchema.methods.generateRefreshToken = function () {
   try {
-    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    return jwt.sign({ _id: this._id }, process.env.REFRESH_TOKEN_SECRET, {
       expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
     });
   } catch (error) {
-    log("error while generating refresh token");
+    console.log("error while generating refresh token", error);
     throw error;
   }
 };
