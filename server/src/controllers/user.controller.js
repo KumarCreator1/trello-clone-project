@@ -122,4 +122,25 @@ const logOutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "user logged out successfully"));
 });
 
-export { registerUser, loginUser, logOutUser };
+const changePassword = asyncHandler(async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  const retrievedUserId = req.user._id;
+  console.log(retrievedUserId);
+
+  const user = await User.findById(retrievedUserId);
+
+  if (!(await user.isPasswordCorrect(currentPassword))) {
+    throw new ApiError(404, "wrong password");
+  }
+
+  user.password = newPassword;
+  await user.save();
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, { user, currentPassword, newPassword }, "password updated successfully"),
+    );
+});
+
+export { registerUser, loginUser, logOutUser, changePassword };

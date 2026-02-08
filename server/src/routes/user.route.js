@@ -1,6 +1,11 @@
 import { Router } from "express";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
-import { registerUser, loginUser, logOutUser } from "../controllers/user.controller.js";
+import {
+  registerUser,
+  loginUser,
+  logOutUser,
+  changePassword,
+} from "../controllers/user.controller.js";
 
 const router = Router();
 
@@ -9,5 +14,6 @@ router.route("/login").post(loginUser);
 
 //secure route, only accessible with valid JWT token
 router.route("/logout").post(verifyJWT, logOutUser);
+router.route("/changepassword").post(verifyJWT, changePassword);
 
 export default router;

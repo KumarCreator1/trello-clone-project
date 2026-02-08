@@ -57,7 +57,7 @@ userSchema.methods.generateAccessToken = function () {
   try {
     return jwt.sign(
       { _id: this._id, email: this.email, username: this.username },
-      process.env.ACCESS_TOKEN_SECRET,
+      process.env.TOKEN_SECRET,
       {
         expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
       },
@@ -70,7 +70,7 @@ userSchema.methods.generateAccessToken = function () {
 
 userSchema.methods.generateRefreshToken = function () {
   try {
-    return jwt.sign({ _id: this._id }, process.env.REFRESH_TOKEN_SECRET, {
+    return jwt.sign({ _id: this._id }, process.env.TOKEN_SECRET, {
       expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
     });
   } catch (error) {
