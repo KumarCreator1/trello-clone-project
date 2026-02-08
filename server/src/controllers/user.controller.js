@@ -136,10 +136,15 @@ const changePassword = asyncHandler(async (req, res) => {
 
   user.password = newPassword;
   await user.save();
+
+  const resUser = user.toObject()
+  delete resUser.password
+  delete resUser.refreshToken
+
   return res
     .status(200)
     .json(
-      new ApiResponse(200, { user, currentPassword, newPassword }, "password updated successfully"),
+      new ApiResponse(200, { resUser, currentPassword, newPassword }, "password updated successfully"),
     );
 });
 
